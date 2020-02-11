@@ -84,9 +84,15 @@ public class ConfigurationAsCodeTest {
         Files.createSymbolicLink(Paths.get(tempFolder.getRoot().getAbsolutePath(), "jenkins_6.yaml"),
                                  data.resolve("jenkins_6.yaml"));
 
+        // Create a symbolic linked folder with 1 configuration file
+        final File folderLinkTarget = tempFolder.newFolder("..2019_11_26_16_29_08.094515937");
+        new File(folderLinkTarget, "jenkins_7.yaml").createNewFile();
+        Files.createSymbolicLink(Paths.get(tempFolder.getRoot().getAbsolutePath(), "linked_folder"),
+            folderLinkTarget.toPath());
+
         assertThat(casc.configs(exactFile.getAbsolutePath()), hasSize(1));
         final List<Path> foo = casc.configs(tempFolder.getRoot().getAbsolutePath());
-        assertThat(foo, hasSize(6));
+        assertThat(foo, hasSize(7));
     }
 
     @Test
